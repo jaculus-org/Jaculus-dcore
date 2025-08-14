@@ -6,7 +6,7 @@ To create a port of Jaculus for a new device, it is necessary to implement a Dup
 stream interface for controlling the device and write hardware bindings to use
 the device peripherals.
 
-See [Jaculus-esp32](https://github.com/cubicap/Jaculus-esp32) for an example of
+See [Jaculus-esp32](https://github.com/jaculus-org/Jaculus-esp32) for an example of
 how to set up a new Jaculus device.
 
 # License

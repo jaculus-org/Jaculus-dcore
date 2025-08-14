@@ -4,10 +4,10 @@ site_description: >-
   Jaculus allows you to run JavaScript code on embedded platforms.
 site_author: Petr Kubica
 
-repo_url: https://github.com/cubicap/Jaculus-dcore
-repo_name: cubicap/Jaculus-dcore
+repo_url: https://github.com/jaculus-org/Jaculus-dcore
+repo_name: jaculus-org/Jaculus-dcore
 
-copyright: Copyright © 2023 Petr Kubica
+copyright: Copyright © 2025 Petr Kubica
 
 theme:
   name: material

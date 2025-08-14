@@ -12,7 +12,7 @@ if(ESP_PLATFORM)
         SRCS ${SRC}
         INCLUDE_DIRS .
         REQUIRES jac-machine jac-link
-                pthread mbedtls
+                 pthread mbedtls
     )
 
     target_compile_definitions(${COMPONENT_LIB} PUBLIC -DJAC_DCORE_USE_MBEDTLS=1 -DJAC_DCORE_VERSION="${DCORE_VERSION}")
@@ -22,13 +22,13 @@ else()
 
     FetchContent_Declare(
         Jaculus-machine
-        URL https://github.com/cubicap/Jaculus-machine/archive/refs/tags/v0.0.9.tar.gz
+        URL https://github.com/jaculus-org/Jaculus-machine/archive/refs/tags/v0.0.9.tar.gz
     )
     FetchContent_MakeAvailable(Jaculus-machine)
 
     FetchContent_Declare(
         Jaculus-link
-        URL https://github.com/cubicap/Jaculus-link/archive/refs/tags/v0.0.3.tar.gz
+        URL https://github.com/jaculus-org/Jaculus-link/archive/refs/tags/v0.0.3.tar.gz
     )
     FetchContent_MakeAvailable(Jaculus-link)
 
