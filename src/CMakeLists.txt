@@ -22,7 +22,7 @@ else()
 
     FetchContent_Declare(
         Jaculus-machine
-        URL https://github.com/jaculus-org/Jaculus-machine/archive/refs/tags/v0.0.9.tar.gz
+        URL https://github.com/jaculus-org/Jaculus-machine/archive/refs/tags/v0.0.10.tar.gz
     )
     FetchContent_MakeAvailable(Jaculus-machine)
 
