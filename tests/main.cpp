@@ -5,7 +5,7 @@
 #include <jac/features/eventQueueFeature.h>
 #include <jac/features/filesystemFeature.h>
 #include <jac/features/keyvalueFeature.h>
-#include <jac/features/moduleLoaderFeature.h>
+#include <jac/features/simpleModuleLoaderFeature.h>
 #include <jac/features/stdioFeature.h>
 #include <jac/features/timersFeature.h>
 
@@ -65,7 +65,7 @@ int main() {
         jac::StdioFeature,
         jac::EventLoopFeature,
         jac::FilesystemFeature,
-        jac::ModuleLoaderFeature,
+        jac::SimpleModuleLoaderFeature,
         jac::TimersFeature,
         jac::EventLoopTerminal,
         jac::KeyValueFeature
