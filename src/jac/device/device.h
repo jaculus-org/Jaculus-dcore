@@ -214,11 +214,10 @@ bool Device<Machine>::startMachine(std::string path) {
         path = "./" + path;
     }
 
+    std::scoped_lock<std::mutex> lock(_machineMutex);
     if (_machineRunning) {
         return false;
     }
-
-    std::scoped_lock<std::mutex> lock(_machineMutex);
 
     if (_machineThread.joinable()) {
         _machineThread.join();
@@ -293,11 +292,10 @@ bool Device<Machine>::startMachine(std::string path) {
 
 template<class Machine>
 bool Device<Machine>::stopMachine() {
+    std::unique_lock<std::mutex> lock(_machineMutex);
     if (!_machineRunning) {
         return false;
     }
-
-    std::unique_lock<std::mutex> lock(_machineMutex);
 
     _machine->kill();
 
