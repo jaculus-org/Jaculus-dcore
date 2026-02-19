@@ -23,6 +23,21 @@ namespace jac {
 
 
 template<class Machine>
+struct HasNodeModuleLoader {
+    template<class T>
+    static auto test(T& m) -> decltype(m.READ_PACKAGE_JSON(std::string{}, m), std::true_type{});
+
+    template<class T>
+    static std::false_type test(...);
+
+    static constexpr bool value = std::is_same_v<decltype(test<Machine>(std::declval<Machine&>())), std::true_type>;
+};
+
+template<class Machine>
+constexpr bool HasNodeModuleLoader_v = HasNodeModuleLoader<Machine>::value;
+
+
+template<class Machine>
 class Device : public MachineCtrl {
     Router _router;
 
@@ -195,6 +210,10 @@ public:
 
 template<class Machine>
 bool Device<Machine>::startMachine(std::string path) {
+    if ((!HasNodeModuleLoader_v<Machine> || !path.empty()) && !path.starts_with("/")) {
+        path = "./" + path;
+    }
+
     if (_machineRunning) {
         return false;
     }
@@ -205,7 +224,7 @@ bool Device<Machine>::startMachine(std::string path) {
         _machineThread.join();
     }
 
-    _machineThread = std::thread([this, path]() {
+    _machineThread = std::thread([this, path]() mutable {
         Device<Machine>& self = *this;
 
         {
@@ -220,6 +239,25 @@ bool Device<Machine>::startMachine(std::string path) {
         }
 
         try {
+            if constexpr (HasNodeModuleLoader_v<Machine>) {
+                if (path.empty()) {
+                    if (this->_machine->fs.existsCode("package.json")) {
+                        jac::Object pjson = self._machine->READ_PACKAGE_JSON(".", *self._machine);
+                        if (!pjson.hasProperty("main")) {
+                            path = "./index.js";
+                        }
+                        auto mainVal = pjson.get<jac::Value>("main");
+                        if (!mainVal.isString()) {
+                            throw jac::Exception::create(jac::Exception::Type::Error, "main field must be a string");
+                        }
+                        std::string mainFile = mainVal.toString();
+                        path = self._machine->path.join({ ".", mainFile });
+                    }
+                    else {
+                        path = "./index.js";
+                    }
+                }
+            }
             self._machine->evalFileWithEventLoop(path);
         }
         catch (jac::Exception& e) {
