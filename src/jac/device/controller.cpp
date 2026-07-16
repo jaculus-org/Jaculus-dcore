@@ -55,6 +55,10 @@ void Controller::processPacket(int sender, std::span<const uint8_t> data) {
             break;
         case Command::CONFIG_ERASE:
             processConfigErase(sender, std::span<const uint8_t>(begin, data.end()));
+            break;
+        case Command::CONFIG_LIST_KEYS:
+            processConfigListKeys(sender, std::span<const uint8_t>(begin, data.end()));
+            break;
         default:
             break;
     }
@@ -341,6 +345,34 @@ void Controller::processConfigErase(int sender, std::span<const uint8_t> data) {
         _machineCtrl.emitKeyValueModified(nsname, name);
     } else {
         response->put(static_cast<uint8_t>(Command::ERROR));
+    }
+
+    response->send();
+}
+
+void Controller::processConfigListKeys(int sender, std::span<const uint8_t> data) {
+    auto response = this->_output->buildPacket({sender});
+
+    // 0: namespace
+    auto stringEnd = std::find(data.begin(), data.end(), '\0');
+    std::string nsname(data.begin(), stringEnd);
+    auto dataIt = stringEnd+1;
+    if(dataIt != data.end()) {
+        response->put(static_cast<uint8_t>(Command::ERROR));
+        response->send();
+        return;
+    }
+
+    auto kv = _machineCtrl.openKeyValue(nsname);
+    if(!kv) {
+        response->put(static_cast<uint8_t>(Command::ERROR));
+        response->send();
+        return;
+    }
+
+    response->put(static_cast<uint8_t>(Command::CONFIG_LIST_KEYS));
+    for(const auto& key : kv->keys()) {
+        response->put(std::span<const uint8_t>(reinterpret_cast<const uint8_t*>(key.data()), key.size() + 1));
     }
 
     response->send();

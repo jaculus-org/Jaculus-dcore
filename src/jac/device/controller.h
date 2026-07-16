@@ -34,6 +34,7 @@ class Controller {
         CONFIG_SET = 0x30,
         CONFIG_GET = 0x31,
         CONFIG_ERASE = 0x32,
+        CONFIG_LIST_KEYS = 0x33,
     };
 
     std::unique_ptr<InputPacketCommunicator> _input;
@@ -52,6 +53,7 @@ class Controller {
     void processConfigSet(int sender, std::span<const uint8_t> data);
     void processConfigGet(int sender, std::span<const uint8_t> data);
     void processConfigErase(int sender, std::span<const uint8_t> data);
+    void processConfigListKeys(int sender, std::span<const uint8_t> data);
 
     TimeoutLock& _devLock;
     MachineCtrl& _machineCtrl;
