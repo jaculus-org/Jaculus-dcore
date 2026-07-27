@@ -5,7 +5,7 @@ set(SRC
     "jac/device/util/sha1.c"
 )
 
-set(DCORE_VERSION "0.0.22")
+set(DCORE_VERSION "0.0.23")
 
 if(ESP_PLATFORM)
     idf_component_register(
