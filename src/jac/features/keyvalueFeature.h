@@ -120,28 +120,29 @@ public:
 
         Next::initialize();
 
-        FunctionFactory ff(this->context());
-        Module& mod = this->newModule("keyvalue");
+        this->newModule("keyvalue", [this](Module& mod) {
+            FunctionFactory ff(this->context());
 
-        mod.addExport("open", ff.newFunction(noal::function([this](std::string nsname) {
-            if(!kvOpener) {
-                throw Exception::create(Exception::Type::InternalError, "KeyValueFeature not set up");
-            }
+            mod.addExport("open", ff.newFunction(noal::function([this](std::string nsname) {
+                if(!kvOpener) {
+                    throw Exception::create(Exception::Type::InternalError, "KeyValueFeature not set up");
+                }
 
-            if(nsname.length() > 15) {
-                throw Exception::create(Exception::Type::TypeError, "namespace is too long (max 15 chars)");
-            }
+                if(nsname.length() > 15) {
+                    throw Exception::create(Exception::Type::TypeError, "namespace is too long (max 15 chars)");
+                }
 
-            if(nsname == "wifi_net") {
-                throw Exception::create(Exception::Type::InternalError, "this namespace is protected");
-            }
+                if(nsname == "wifi_net") {
+                    throw Exception::create(Exception::Type::InternalError, "this namespace is protected");
+                }
 
-            auto nsHandle = kvOpener(nsname);
-            if(!nsHandle) {
-                throw Exception::create(Exception::Type::InternalError, "failed to open namespace");
-            }
-            return KvClass::createInstance(this->context(), nsHandle.release());
-        })));
+                auto nsHandle = kvOpener(nsname);
+                if(!nsHandle) {
+                    throw Exception::create(Exception::Type::InternalError, "failed to open namespace");
+                }
+                return KvClass::createInstance(this->context(), nsHandle.release());
+            })));
+        });
     }
 };
 
