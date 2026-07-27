@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.8" xml:lang="en-US">
+  <compounddef id="structjac_1_1HasNodeModuleLoader" kind="struct" language="C++" prot="public">
+    <compoundname>jac::HasNodeModuleLoader</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class Machine</type>
+      </param>
+    </templateparamlist>
+    <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="structjac_1_1HasNodeModuleLoader_1a95e503e28c5a27d1599cc8fb7b03d958" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr bool</type>
+        <definition>constexpr bool jac::HasNodeModuleLoader&lt; Machine &gt;::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>jac::HasNodeModuleLoader::value</qualifiedname>
+        <initializer>= std::is_same_v&lt;decltype(test&lt;Machine&gt;(std::declval&lt;Machine&amp;&gt;())), std::true_type&gt;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/jac/device/device.h" line="33" column="27" bodyfile="src/jac/device/device.h" bodystart="33" bodyend="-1"/>
+      </memberdef>
+    </sectiondef>
+    <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="structjac_1_1HasNodeModuleLoader_1a8838f449e2f3844629b18e9ab2c40647" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>static auto jac::HasNodeModuleLoader&lt; Machine &gt;::test</definition>
+        <argsstring>(T &amp;m) -&gt; decltype(m.READ_PACKAGE_JSON(std::string{}, m), std::true_type{})</argsstring>
+        <name>test</name>
+        <qualifiedname>jac::HasNodeModuleLoader::test</qualifiedname>
+        <param>
+          <type>T &amp;</type>
+          <declname>m</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/jac/device/device.h" line="28" column="17"/>
+      </memberdef>
+      <memberdef kind="function" id="structjac_1_1HasNodeModuleLoader_1a2a7b1e5e1d68bc1a1ac0e1b50cd6200e" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class T</type>
+          </param>
+        </templateparamlist>
+        <type>std::false_type</type>
+        <definition>static std::false_type jac::HasNodeModuleLoader&lt; Machine &gt;::test</definition>
+        <argsstring>(...)</argsstring>
+        <name>test</name>
+        <qualifiedname>jac::HasNodeModuleLoader::test</qualifiedname>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="src/jac/device/device.h" line="31" column="28"/>
+      </memberdef>
+    </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="src/jac/device/device.h" line="26" column="1" bodyfile="src/jac/device/device.h" bodystart="26" bodyend="34"/>
+    <listofallmembers>
+      <member refid="structjac_1_1HasNodeModuleLoader_1a8838f449e2f3844629b18e9ab2c40647" prot="public" virt="non-virtual"><scope>jac::HasNodeModuleLoader</scope><name>test</name></member>
+      <member refid="structjac_1_1HasNodeModuleLoader_1a2a7b1e5e1d68bc1a1ac0e1b50cd6200e" prot="public" virt="non-virtual"><scope>jac::HasNodeModuleLoader</scope><name>test</name></member>
+      <member refid="structjac_1_1HasNodeModuleLoader_1a95e503e28c5a27d1599cc8fb7b03d958" prot="public" virt="non-virtual"><scope>jac::HasNodeModuleLoader</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
