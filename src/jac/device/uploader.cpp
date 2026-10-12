@@ -268,7 +268,10 @@ bool Uploader::processWriteFile(int sender, std::span<const uint8_t> data) {
         return false;
     }
 
-    _file = std::fstream(*path, std::ios::out | std::ios::binary | std::ios::trunc);
+    _file = std::fstream(*path, std::ios::in | std::ios::out | std::ios::binary);
+    if (!_file.is_open()) {
+        _file = std::fstream(*path, std::ios::out | std::ios::binary);
+    }
     if (!_file.is_open()) {
         auto response = _output->buildPacket({sender});
         response->put(static_cast<uint8_t>(Command::ERROR));
@@ -283,9 +286,21 @@ bool Uploader::processWriteFile(int sender, std::span<const uint8_t> data) {
         response->send();
         return true;
     };
-    _onDataComplete = [this, sender]() {
+    _onDataComplete = [this, sender, path = *path]() {
+        auto size = static_cast<std::uintmax_t>(_file.tellp());
         _file.sync();
         _file.close();
+        std::error_code ec;
+        if (std::filesystem::file_size(path, ec) > size && !ec) {
+            std::filesystem::resize_file(path, size, ec);
+        }
+        if (ec) {
+            auto response = _output->buildPacket({sender});
+            response->put(static_cast<uint8_t>(Command::ERROR));
+            response->put(static_cast<uint8_t>(Error::FILE_OPEN_FAILED));
+            response->send();
+            return false;
+        }
         auto response = _output->buildPacket({sender});
         response->put(static_cast<uint8_t>(Command::OK));
         response->send();
