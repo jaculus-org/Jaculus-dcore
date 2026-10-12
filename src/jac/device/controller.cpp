@@ -151,6 +151,7 @@ void Controller::processForceUnlock(int sender) {
     _devLock.forceUnlock();
 
     response->put(static_cast<uint8_t>(Command::OK));
+    response->send();
 }
 
 void Controller::processConfigSet(int sender, std::span<const uint8_t> data) {
