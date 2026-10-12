@@ -52,6 +52,7 @@ class Device : public MachineCtrl {
     std::atomic<bool> _machineRunning = false;
     std::thread _machineThread;
     std::mutex _machineMutex;
+    std::function<std::thread(std::function<void()>)> _createMachineThread;
 
     struct MachineIO {
         std::unique_ptr<InputStreamCommunicator> in;
@@ -112,9 +113,11 @@ public:
         std::vector<std::pair<std::string, std::string>> versionInfo,
         std::function<void(std::filesystem::path)> formatFS,
         std::unordered_map<std::string, std::span<const uint8_t>> resources,
-        KeyValueOpener openKeyValueNamespace
+        KeyValueOpener openKeyValueNamespace,
+        std::function<std::thread(std::function<void()>)> createMachineThread
     ):
         _lock(std::chrono::seconds(1), [this] { this->lockTimeout(); }),
+        _createMachineThread(std::move(createMachineThread)),
         _getMemoryStats(getMemoryStats),
         _getStorageStats(getStorageStats),
         _rootDir(rootDir.lexically_normal()),
@@ -223,7 +226,7 @@ bool Device<Machine>::startMachine(std::string path) {
         _machineThread.join();
     }
 
-    _machineThread = std::thread([this, path]() mutable {
+    _machineThread = _createMachineThread([this, path]() mutable {
         Device<Machine>& self = *this;
 
         {

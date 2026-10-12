@@ -91,6 +91,9 @@ int main() {
         },
         [](const std::string& nsname) -> std::unique_ptr<jac::KeyValueNamespace> {
             return nullptr;
+        },
+        [](std::function<void()> f) {
+            return std::thread(std::move(f));
         }
     );
 
