@@ -73,9 +73,7 @@ class Device : public MachineCtrl {
 
     std::atomic<int> _lastExitCode = 0;
 
-    void configureMachine() {
-        _machine = std::make_unique<Machine>();
-
+    void createRootDirs() {
         if (!std::filesystem::exists(_rootDir / "data")) {
             std::filesystem::create_directory(_rootDir / "data");
         }
@@ -83,6 +81,12 @@ class Device : public MachineCtrl {
         if (!std::filesystem::exists(_rootDir / "code")) {
             std::filesystem::create_directory(_rootDir / "code");
         }
+    }
+
+    void configureMachine() {
+        _machine = std::make_unique<Machine>();
+
+        createRootDirs();
 
         _machine->setCodeDir(_rootDir / "code");
         _machine->setWorkingDir(_rootDir / "data");
@@ -163,6 +167,8 @@ public:
     Device& operator=(Device&&) = delete;
 
     void start() {
+        createRootDirs();
+
         _lock.init();
         _uploader->start();
         _controller->start();
