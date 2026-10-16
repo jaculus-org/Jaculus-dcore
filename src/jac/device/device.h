@@ -249,12 +249,12 @@ bool Device<Machine>::startMachine(std::string path) {
         try {
             if constexpr (HasNodeModuleLoader_v<Machine>) {
                 if (path.empty()) {
-                    if (this->_machine->fs.existsCode("package.json")) {
-                        jac::Object pjson = self._machine->READ_PACKAGE_JSON(".", *self._machine);
-                        if (!pjson.hasProperty("main")) {
+                    std::optional<jac::Object> pjson = self._machine->READ_PACKAGE_JSON(".", *self._machine);
+                    if (pjson) {
+                        if (!pjson->hasProperty("main")) {
                             path = "./index.js";
                         }
-                        auto mainVal = pjson.get<jac::Value>("main");
+                        auto mainVal = pjson->get<jac::Value>("main");
                         if (!mainVal.isString()) {
                             throw jac::Exception::create(jac::Exception::Type::Error, "main field must be a string");
                         }
